@@ -46,57 +46,33 @@
             <p class="fs-5 text-body-secondary">Вы находитесь на сайте, предназначенном для продажи товаров.</p>
         </div>
         <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+            {% for product in object_list %}
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm border-primary">
                     <div class="card-header py-3 text-bg-primary border-primary">
-                        <h4 class="my-0 fw-normal">Товар 1</h4>
+                        <h4 class="my-0 fw-normal">{{ product.name }}</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$ 100</h1>
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" class="img-fluid mb-3" style="max-height: 200px;"
+                             alt="{{ product.name }}">
+                        {% endif %}
+
+                        <h1 class="card-title pricing-card-title">{{ product.price }} руб.</h1>
+
                         <ul class="list-unstyled mt-3 mb-4 text-muted">
-                            <li>10 users included</li>
-                            <li>2 GB of storage</li>
-                            <li>Email support</li>
-                            <li>Help center access</li>
+                            <li>{{ product.description|truncatechars:100 }}</li>
+                            <li>Категория: {{ product.category.name }}</li>
                         </ul>
                         <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить</button>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                    <div class="card-header py-3 text-bg-primary border-primary">
-                        <h4 class="my-0 fw-normal">Товар 1</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$ 100</h1>
-                        <ul class="list-unstyled mt-3 mb-4 text-muted">
-                            <li>10 users included</li>
-                            <li>2 GB of storage</li>
-                            <li>Email support</li>
-                            <li>Help center access</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить</button>
-                    </div>
-                </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">Товаров пока нет. Зайдите в админку и добавьте их!</p>
             </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                    <div class="card-header py-3 text-bg-primary border-primary">
-                        <h4 class="my-0 fw-normal">Товар 1</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$ 100</h1>
-                        <ul class="list-unstyled mt-3 mb-4 text-muted">
-                            <li>10 users included</li>
-                            <li>2 GB of storage</li>
-                            <li>Email support</li>
-                            <li>Help center access</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить</button>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </main>

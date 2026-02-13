@@ -4,4 +4,5 @@ __pycache__/
 *.pyc
 db.sqlite3
 .env
-.DS_Stpip install black isort flake8ore
+.DS_Store
+media/
