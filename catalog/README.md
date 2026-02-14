@@ -52,7 +52,3 @@
 ![Создание объектов](screenshots/django_shell_create.png)
 ![Просмотр объектов](screenshots/django_shell_query_all.png)
 ![Фильтрация и обновление](screenshots/django_shell_filter_update.png)
- 
-
-
-правка
