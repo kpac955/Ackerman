@@ -50,5 +50,9 @@
     
 ### Демонстрация работы в Django Shell
 ![Создание объектов](https://github.com/kpac955/Ackerman/blob/home_work_22_final/screenshots/django_shell_create.png?raw=true)
+
+
 ![Просмотр объектов](https://github.com/kpac955/Ackerman/blob/home_work_22_final/screenshots/django_shell_query_all.png?raw=true)
+
+
 ![Фильтрация и обновление](https://github.com/kpac955/Ackerman/blob/home_work_22_final/screenshots/django_shell_filter_update.png?raw=true)
