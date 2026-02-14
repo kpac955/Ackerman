@@ -56,3 +56,4 @@
 
 
 ![Фильтрация и обновление](https://github.com/kpac955/Ackerman/blob/home_work_22_final/screenshots/django_shell_filter_update.png?raw=true)
+

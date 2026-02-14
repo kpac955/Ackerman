@@ -25,3 +25,4 @@ def contacts(request):
         message = request.POST.get("message")
         print(f"Имя: {name}, Сообщение: {message}")
     return render(request, "catalog/contacts.html")
+
