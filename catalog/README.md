@@ -23,9 +23,8 @@
 1. **Клонируйте репозиторий:**
    ```bash
    git clone https://github.com/kpac955/Ackerman.git
-cd Ackerman
-   ```
    
+
 2. **Создайте и активируйте виртуальное окружение:**
     ```bash 
     python -m venv venv
@@ -48,6 +47,11 @@ cd Ackerman
     ```bash
    python manage.py runserver
     ```
+    
+### Демонстрация работы в Django Shell
+![Создание объектов](screenshots/django_shell_create.png)
+![Просмотр объектов](screenshots/django_shell_query_all.png)
+![Фильтрация и обновление](screenshots/django_shell_filter_update.png)
  
 
 
