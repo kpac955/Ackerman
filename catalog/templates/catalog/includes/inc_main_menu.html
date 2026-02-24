@@ -1,0 +1,24 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sidebar">
+    <span class="fs-4">Меню</span>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li><a href="{% url 'catalog:home' %}" class="nav-link active">Главная</a></li>
+        <li><a href="#" class="nav-link text-white">Каталог</a></li>
+        <li><a href="#" class="nav-link text-white">Категории</a></li>
+        <li><a href="{% url 'catalog:contacts' %}" class="nav-link text-white">Контакты</a></li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>Пользователь</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="#">Профиль</a></li>
+            <li><a class="dropdown-item" href="#">Настройки</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Выйти</a></li>
+        </ul>
+    </div>
+</div>

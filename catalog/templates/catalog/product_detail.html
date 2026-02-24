@@ -1,0 +1,26 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="row bg-white p-5 rounded shadow-sm">
+    <div class="col-md-6 text-center">
+        {% if object.image %}
+            <img src="{{ object.image.url }}" class="img-fluid rounded" style="max-height: 500px;" alt="{{ object.name }}">
+        {% else %}
+            <img src="/media/placeholder.png" class="img-fluid rounded" alt="нет фото">
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h1 class="display-4">{{ object.name }}</h1>
+        <p class="badge bg-primary fs-5">{{ object.category.name }}</p>
+        <h2 class="text-success mt-3">{{ object.price }} руб.</h2>
+        <hr>
+        <p class="lead">{{ object.description }}</p>
+        <div class="mt-5">
+            <a href="{% url 'catalog:home' %}" class="btn btn-lg btn-outline-secondary">Назад в меню</a>
+            <button class="btn btn-lg btn-primary">В корзину</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
