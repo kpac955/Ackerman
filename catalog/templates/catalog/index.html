@@ -2,7 +2,10 @@
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
         <h1 class="display-4 fw-normal text-body-emphasis">Главная</h1>
         <p class="fs-5 text-body-secondary">Вы находитесь на сайте, предназначенном для продажи товаров.</p>
+
+        <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Добавить новый продукт</a>
     </div>
+
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
         {% for product in object_list %}
         <div class="col">
@@ -16,9 +19,15 @@
                     {% endif %}
                     <h1 class="card-title pricing-card-title">{{ product.price }} руб.</h1>
                     <ul class="list-unstyled mt-3 mb-4 text-muted">
-                        <li>{{ product.description|truncatechars:100 }}</li> <li>Категория: {{ product.category.name }}</li>
+                        <li>{{ product.description|truncatechars:100 }}</li>
+                        <li>Категория: {{ product.category.name }}</li>
                     </ul>
-                    <a href="{% url 'catalog:product_detail' product.pk %}" class="w-100 btn btn-lg btn-outline-primary">Посмотреть</a>
+
+                    <div class="btn-group w-100 mt-3">
+                        <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-outline-primary">Посмотреть</a>
+                        <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-outline-warning">Изменить</a>
+                        <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-outline-danger">Удалить</a>
+                    </div>
                 </div>
             </div>
         </div>
