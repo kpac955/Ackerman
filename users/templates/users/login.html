@@ -1,0 +1,13 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<div class="card shadow-sm col-4 mx-auto mt-5">
+    <div class="card-body">
+        <h2 class="text-center">Вход</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary w-100">Войти</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
