@@ -25,13 +25,19 @@
                     <ul class="list-unstyled mt-3 mb-4 text-muted">
                         <li>{{ product.description|truncatechars:100 }}</li>
                         <li>Категория: {{ product.category.name }}</li>
+                        <li><small>Владелец: {{ product.owner|default:"Администратор" }}</small></li>
                     </ul>
 
                     <div class="btn-group w-100 mt-3">
                         <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-outline-primary">Посмотреть</a>
 
-                        {% if user.is_authenticated %}
+                        {# Кнопка Изменить: только для владельца #}
+                        {% if user == product.owner %}
                             <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-outline-warning">Изменить</a>
+                        {% endif %}
+
+                        {# Кнопка Удалить: для владельца ИЛИ для модератора с правами #}
+                        {% if user == product.owner or perms.catalog.delete_product %}
                             <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-outline-danger">Удалить</a>
                         {% endif %}
                     </div>

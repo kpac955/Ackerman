@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -28,6 +29,18 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
 
+    # ЗАДАНИЕ 1: Поле статуса публикации
+    is_published = models.BooleanField(default=False, verbose_name="Опубликовано")
+
+    # ЗАДАНИЕ 2: Поле владельца продукта
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        verbose_name="Владелец",
+        blank=True,
+        null=True,
+    )
+
     def __str__(self):
         return self.name
 
@@ -35,3 +48,8 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ("name",)
+
+        # ЗАДАНИЕ 1: Кастомные права доступа
+        permissions = [
+            ("can_unpublish_product", "Может отменять публикацию продукта"),
+        ]
