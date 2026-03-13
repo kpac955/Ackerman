@@ -1,16 +1,30 @@
 from django.contrib.auth.mixins import (  # Добавлен миксин проверки условий
     LoginRequiredMixin, UserPassesTestMixin)
+from django.core.cache import cache
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   TemplateView, UpdateView)
 
 from catalog.forms import ProductForm
 from catalog.models import Product
+from catalog.services import get_products_by_category
+from config.settings import CACHE_ENABLED
 
 
 class ProductListView(ListView):
     model = Product
     template_name = "catalog/index.html"
+
+    def get_queryset(self):
+        if CACHE_ENABLED:
+            key = "product_list"
+            products = cache.get(key)
+            if products is None:
+                products = super().get_queryset()
+                cache.set(key, products)
+            return products
+
+        return super().get_queryset()
 
 
 class ProductDetailView(DetailView):
@@ -58,3 +72,12 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         obj = self.get_object()
 
         return user == obj.owner or user.has_perm("catalog.delete_product")
+
+
+class CategoryProductListView(ListView):
+    model = Product
+    template_name = "catalog/category_products.html"
+
+    def get_queryset(self):
+        category_id = self.kwargs.get("pk")
+        return get_products_by_category(category_id)

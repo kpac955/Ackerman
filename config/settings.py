@@ -141,3 +141,16 @@ EMAIL_HOST_USER = "kpas95545@gmail.com"
 
 LOGIN_URL = "users:login"
 LOGIN_REDIRECT_URL = "catalog:home"
+
+CACHE_ENABLED = True
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        }
+    }
