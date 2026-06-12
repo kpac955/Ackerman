@@ -1,0 +1,41 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sidebar">
+    <span class="fs-4">Ackerman Shop</span>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li><a href="{% url 'catalog:home' %}" class="nav-link text-white">Главная</a></li>
+        <li><a href="{% url 'blog:list' %}" class="nav-link text-white">Блог</a></li>
+        <li><a href="{% url 'catalog:contacts' %}" class="nav-link text-white">Контакты</a></li>
+
+        {% if not user.is_authenticated %}
+            <hr>
+            <li><a href="{% url 'users:login' %}" class="nav-link text-white">Войти</a></li>
+            <li><a href="{% url 'users:register' %}" class="nav-link text-warning">Регистрация</a></li>
+        {% endif %}
+    </ul>
+
+    <hr>
+
+    {% if user.is_authenticated %}
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="" width="32" height="32" class="rounded-circle me-2">
+            {% else %}
+                <i class="bi bi-person-circle me-2" style="font-size: 32px;"></i>
+            {% endif %}
+            <strong style="font-size: 0.8rem;">{{ user.email }}</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <form action="{% url 'users:logout' %}" method="post" class="px-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link dropdown-item p-0 m-0">Выйти</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+</div>

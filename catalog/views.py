@@ -1,0 +1,83 @@
+from django.contrib.auth.mixins import (  # Добавлен миксин проверки условий
+    LoginRequiredMixin, UserPassesTestMixin)
+from django.core.cache import cache
+from django.urls import reverse_lazy
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  TemplateView, UpdateView)
+
+from catalog.forms import ProductForm
+from catalog.models import Product
+from catalog.services import get_products_by_category
+from config.settings import CACHE_ENABLED
+
+
+class ProductListView(ListView):
+    model = Product
+    template_name = "catalog/index.html"
+
+    def get_queryset(self):
+        if CACHE_ENABLED:
+            key = "product_list"
+            products = cache.get(key)
+            if products is None:
+                products = super().get_queryset()
+                cache.set(key, products)
+            return products
+
+        return super().get_queryset()
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "catalog/product_detail.html"
+
+
+class ContactTemplateView(TemplateView):
+    template_name = "catalog/contacts.html"
+
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+    success_url = reverse_lazy("catalog:home")
+
+    def form_valid(self, form):
+        """Автоматически назначает текущего пользователя владельцем продукта."""
+        product = form.save(commit=False)
+        product.owner = self.request.user
+        product.save()
+        return super().form_valid(form)
+
+
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+    success_url = reverse_lazy("catalog:home")
+
+    def test_func(self):
+        """Проверяет, что редактировать может только владелец."""
+        return self.request.user == self.get_object().owner
+
+
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Product
+    template_name = "catalog/product_confirm_delete.html"
+    success_url = reverse_lazy("catalog:home")
+
+    def test_func(self):
+        """Удалять может владелец или модератор с соответствующим правом."""
+        user = self.request.user
+        obj = self.get_object()
+
+        return user == obj.owner or user.has_perm("catalog.delete_product")
+
+
+class CategoryProductListView(ListView):
+    model = Product
+    template_name = "catalog/category_products.html"
+
+    def get_queryset(self):
+        category_id = self.kwargs.get("pk")
+        return get_products_by_category(category_id)

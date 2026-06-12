@@ -1,0 +1,53 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal text-body-emphasis">Главная</h1>
+        <p class="fs-5 text-body-secondary">Вы находитесь на сайте, предназначенном для продажи товаров.</p>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Добавить новый продукт</a>
+        {% endif %}
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        {% for product in object_list %}
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-bg-primary border-primary">
+                    <h4 class="my-0 fw-normal">{{ product.name }}</h4>
+                </div>
+                <div class="card-body">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" class="img-fluid mb-3" style="max-height: 200px;" alt="{{ product.name }}">
+                    {% endif %}
+                    <h1 class="card-title pricing-card-title">{{ product.price }} руб.</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-muted">
+                        <li>{{ product.description|truncatechars:100 }}</li>
+                        <li>Категория: {{ product.category.name }}</li>
+                        <li><small>Владелец: {{ product.owner|default:"Администратор" }}</small></li>
+                    </ul>
+
+                    <div class="btn-group w-100 mt-3">
+                        <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-outline-primary">Посмотреть</a>
+
+                        {# Кнопка Изменить: только для владельца #}
+                        {% if user == product.owner %}
+                            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-outline-warning">Изменить</a>
+                        {% endif %}
+
+                        {# Кнопка Удалить: для владельца ИЛИ для модератора с правами #}
+                        {% if user == product.owner or perms.catalog.delete_product %}
+                            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-outline-danger">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center text-muted">Товаров пока нет. Зайдите в админку и создайте их!</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
